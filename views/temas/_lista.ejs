@@ -1,0 +1,31 @@
+<!--Plantilla ejs que toma datos de temas y genera html-->
+<!-- temas, variable que viene desde el controlador, o sea el array db-->
+<!-- con forEach es un metodo para recorrer los arrays y ejecutar una funcion por cada uno-->
+<% temas.forEach(t => { %>
+<div class="box" data-tema="<%= t.id %>">
+    <div class="fila">
+        <strong><%= t.titulo %></strong>
+        <span class="tag">Votos: <%= t.votos %></span>
+        <button data-accion="votar-tema" data-idtema="<%= t.id %>" class="btn-vote">Vote</button>
+        <button data-accion="editar-tema" data-idtema="<%= t.id %>" class="btn-edit">Editar</button>
+        <button data-accion="borrar-tema" data-idtema="<%= t.id %>" class="btn-delete">Eliminar</button>
+    </div>
+
+    <form class="fila form-crear-enlace" data-idtema="<%= t.id %>">
+        <input type="url" name="url" placeholder="Agregar enlace (https://...)" required/>
+        <button type="submit">Agregar enlace</button>
+    </form>
+
+    <div class="enlaces">
+        <% t.enlaces.forEach(e => { %>
+            <div class="fila" data-enlace="<%= e.id %>">
+            <a href="<%= e.url %>" target="_blank"><%= e.url %></a>
+            <span class="tag">Votos: <%= e.votos %></span>
+            <button data-accion="votar-enlace" data-idtema="<%= t.id %>" data-idenlace="<%= e.id %>" class="btn-vote">Vote</button>
+            <button data-accion="editar-enlace" data-idtema="<%= t.id %>" data-idenlace="<%= e.id %>" class="btn-edit">Editar</button>
+            <button data-accion="borrar-enlace" data-idtema="<%= t.id %>" data-idenlace="<%= e.id %>" class="btn-delete">Eliminar</button>
+            </div>
+            <% }) %>
+    </div>
+</div>
+<% }) %>
