@@ -13,21 +13,23 @@ Aplicación MVC con Node.js, Express y EJS para gestionar temas con funcionalida
 
 ## Estructura de proyecto
 
+```
 .
 ├── app.js
 ├── src/
 │   ├── routes/
 │   ├── controllers/
-│   └── servicios/ (o lógica de negocio)
+│   └── servicios/              # lógica de negocio
 ├── views/
 │   ├── layouts/
 │   ├── partials/
-│   └── páginas EJS
+│   └── pages/                  # vistas EJS
 ├── public/
 │   ├── js/
 │   └── css/
 ├── package.json
 └── .gitignore
+```
 
 ## Instalación
 
