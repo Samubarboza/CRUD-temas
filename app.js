@@ -1,6 +1,7 @@
 import express from "express";
 import path from "path";
 import temasRouter from "./src/routes/temas.routes.js";
+import enlacesRouter from './src/routes/enlaces.routes.js';
 
 // base de datos
 import { iniciar_base_de_datos } from "./src/db/db.js";
@@ -11,8 +12,8 @@ const app = express();
 iniciar_base_de_datos();
 
 // Config básica
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+app.use(express.json()); // traducimos el body que llega en formato json a objeto js
+app.use(express.urlencoded({ extended: true })); 
 app.use(express.static(path.join(process.cwd(), "public")));
 
 app.set("view engine", "ejs");
@@ -20,6 +21,7 @@ app.set("views", path.join(process.cwd(), "views"));
 
 // Rutas
 app.use("/", temasRouter);
+app.use('/', enlacesRouter);
 
 // Arranque
 const PORT = 3000;

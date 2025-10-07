@@ -1,45 +1,39 @@
-// recibe un string html y lo inserta dentro del contenedor principal de la lista
-function reemplazar_contenido_con_html_del_servidor(contenido_html_devuelto_por_servidor) { // html nuevo generado en el servidor (EJS/HBS)
+// esta funcion recibe un string html y lo inserta dentro del contenedor principal
+function reemplazar_contenido_con_html_del_servidor(contenido_html_devuelto_por_servidor) {
+  // leemos el documento por id, con inner agarramos ese id y lo que contenga lo reemplazamos por el contenido
   document.getElementById('contenedor-lista').innerHTML = contenido_html_devuelto_por_servidor
 }
 
+
+// Envía petición HTTP al servidor Express con URL, método y datos en JSON, espera la respuesta y la devuelve como objeto JSON
 async function enviar_http_con_json(url_destino_servidor, metodo_http_ausar, datos_opciones_a_enviar_en_json) {
   const respuesta_http_del_servidor = await fetch(url_destino_servidor, {
     method: metodo_http_ausar,
     headers: { "Content-Type": "application/json" },
-    // operador ternario, es como un if - si datos existe, usa, si datos no existe pone, undefined 
-    // JSON.stringfy convierte objeto json a texto json
     body: datos_opciones_a_enviar_en_json ? JSON.stringify(datos_opciones_a_enviar_en_json) : undefined
   });
   return respuesta_http_del_servidor.json();
 }
 
-
-
-document.getElementById("form-crear-tema").addEventListener("submit", async (evento_del_formulario)=>{ // utilizamos flecha para decirle que, cuando pase el evento submit, ejecuta esta funcion que recibe evento_del_formulario
-  evento_del_formulario.preventDefault(); // la flecha frena el comportamiento automatico de preventDefault
-
+// Al enviar el formulario: envía POST /temas con {titulo}, recibe JSON {html} del servidor, reemplaza #contenedor-lista con ese HTML y resetea el formulario (no retorna nada, solo actualiza la UI).
+document.getElementById("form-crear-tema").addEventListener("submit", async (evento_del_formulario) => {
+  evento_del_formulario.preventDefault();
   const titulo_ingresado_usuario = evento_del_formulario.target.titulo.value.trim();
-  
-  // si no hay titulo retornamos undefined
-  if (!titulo_ingresado_usuario) return;
 
+  if (!titulo_ingresado_usuario) return;
+   // envío POST /temas con {titulo} y espero la respuesta { html }
   const { html: contenido_html_devuelto_por_servidor } = await enviar_http_con_json("/temas", "POST", { titulo: titulo_ingresado_usuario });
 
-    reemplazar_contenido_con_html_del_servidor(contenido_html_devuelto_por_servidor);
-    // limpiamos el formulario, para que el input quede vacio y listo para volver a escribir otro tema
-    evento_del_formulario.target.reset();
+  reemplazar_contenido_con_html_del_servidor(contenido_html_devuelto_por_servidor);
+  evento_del_formulario.target.reset();
 });
 
 
 // Delegación de eventos para TODOS los botones y formularios dentro de la lista
 // aca estamos escuchando eventos, en este caso click, y le decimos, cada vez que haya un evento, ejecuta esta funcion
 document.addEventListener("click", async (evento_click)=>{ // async permite escuchar await adentro para esperar respuestas del servidor
-
     const boton_clickeado = evento_click.target.closest("button");
-
     if (!boton_clickeado) return; 
-
     const accion_del_boton = boton_clickeado.dataset.accion;
 
   // Tema: votar
@@ -50,7 +44,7 @@ document.addEventListener("click", async (evento_click)=>{ // async permite escu
     const { html: contenido_html_devuelto_por_servidor} = await enviar_http_con_json(`/temas/${id_del_tema_a_votar}/votar`, "POST");
     reemplazar_contenido_con_html_del_servidor(contenido_html_devuelto_por_servidor);
 }
-
+  
   // Tema: editar
     if (accion_del_boton === "editar-tema") {
     const { idtema: id_del_tema_a_editar } = boton_clickeado.dataset;
