@@ -1,5 +1,6 @@
-import { obtener_lista_temas_y_enlaces_ordenados } from "../models/temas.model.js";
+// enlaces.controller.js actúa como puente entre el navegador y el modelo de datos de enlaces, ejecutando la lógica CRUD y devolviendo el HTML actualizado al usuario.
 
+import { obtener_lista_temas_y_enlaces_ordenados } from "../models/temas.model.js";
 
 import {
     crearEnlace, editarEnlace, borrarEnlace, votarEnlace

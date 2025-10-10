@@ -1,3 +1,5 @@
+// main se ejecuta en el navegador, por eso tenemos en la carpeta public
+
 // esta funcion recibe un string html y lo inserta dentro del contenedor principal
 function reemplazar_contenido_con_html_del_servidor(contenido_html_devuelto_por_servidor) {
   // leemos el documento por id, con inner agarramos ese id y lo que contenga lo reemplazamos por el contenido
@@ -93,7 +95,7 @@ document.addEventListener("click", async (evento_click)=>{ // async permite escu
     const { html: contenido_html_devuelto_por_servidor } = await enviar_http_con_json(`/temas/${id_del_tema_seleccionado}/enlaces/${id_del_enlace_seleccionado}`, "DELETE");
 
     reemplazar_contenido_con_html_del_servidor(contenido_html_devuelto_por_servidor);
-}
+  }
 });
 
 // Crear enlace (delegado por formulario dentro de cada tema)
